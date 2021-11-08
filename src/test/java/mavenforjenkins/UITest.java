@@ -12,12 +12,24 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class UITest 
 {
 
-	
+	@Parameters("Browser")
 	@Test
-	public void startBrowser()
+	public void startBrowser(String browserName)
 	{
-		WebDriverManager.chromedriver().setup();
-        WebDriver driver = new ChromeDriver();
+		System.out.println("Parameter value is "+browserName);
+		WebDriver driver=null;
+		
+		if(browserName.contains("Chrome"))
+		{
+			WebDriverManager.chromedriver().setup();
+			 driver=new ChromeDriver();
+		}
+		else if(browserName.contains("Edge"))
+		{
+			WebDriverManager.edgedriver().setup();
+			 driver=new EdgeDriver();
+		}
+		
 		driver.manage().window().maximize();
 		driver.get("https://opensource-demo.orangehrmlive.com/");
 		Assert.assertTrue(driver.getTitle().contains("Orange"), "Title does not match");
